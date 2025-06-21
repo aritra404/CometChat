@@ -11,7 +11,6 @@ import com.cometchat.chatuikit.shared.cometchatuikit.UIKitSettings
 class MyApplication : Application() {
 
 
-
     private val TAG = "MyApplication"
 
     private val appID = "27770458febb23d2"
