@@ -56,5 +56,6 @@ https://github.com/user-attachments/assets/7bba265e-053a-4b71-80fc-475f695ec4b1
 This chat feature was also integrated into my [Safety App](https://github.com/aritra404/Safety_app-main), enabling real-time communication between users and their guardians. This added functionality enhances the app’s safety focus by allowing trusted contact support during emergencies.
 
 Users can click this button to open CometChat
-![WhatsApp Image 2025-06-22 at 18 51 59_edd97b7c](https://github.com/user-attachments/assets/5e47223d-5ea3-4ac1-a52a-9ef5cdd82d84)
+<img src="https://github.com/user-attachments/assets/5e47223d-5ea3-4ac1-a52a-9ef5cdd82d84" width="300"/>
+
 
