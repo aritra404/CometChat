@@ -1,16 +1,14 @@
 package com.example.cometchat
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import com.cometchat.chat.core.CometChat
 import com.cometchat.chat.exceptions.CometChatException
-import com.cometchat.chat.models.User
 import com.cometchat.chatuikit.shared.cometchatuikit.CometChatUIKit
 import com.cometchat.chatuikit.shared.cometchatuikit.UIKitSettings
-import android.content.Intent
-
 
 class MainActivity : ComponentActivity() {
 
@@ -33,37 +31,42 @@ class MainActivity : ComponentActivity() {
 
         CometChatUIKit.init(this, uiKitSettings, object : CometChat.CallbackListener<String?>() {
             override fun onSuccess(successString: String?) {
-
                 Log.d(TAG, "Initialization completed successfully")
-
-                loginUser()
+                checkUserLoginStatus()
             }
 
-            override fun onError(e: CometChatException?) {}
+            override fun onError(e: CometChatException?) {
+                Log.e(TAG, "Initialization failed: ${e?.message}")
+                // Still show login screen even if init fails
+                navigateToLogin()
+            }
         })
     }
 
-    private fun loginUser() {
-        CometChatUIKit.login("cometchat-uid-1", object : CometChat.CallbackListener<User>() {
-            override fun onSuccess(user: User) {
+    private fun checkUserLoginStatus() {
+        val loggedInUser = CometChat.getLoggedInUser()
 
-                // ✅ Option 1: Launch One-to-One or Group Chat Screen
-                // val intent = Intent(this@MainActivity, MessageActivity::class.java)
-                // intent.putExtra("uid", "cometchat-uid-1")
-                // startActivity(intent)
+        if (loggedInUser != null) {
+            Log.d(TAG, "User already logged in: ${loggedInUser.uid}")
+            // User is already logged in, go to main app
+            navigateToTabbedActivity()
+        } else {
+            Log.d(TAG, "No user logged in, showing login screen")
+            // No user logged in, show login screen
+            navigateToLogin()
+        }
+    }
 
-                // ✅ Option 2: Launch Conversation List + Message View (Split-Screen Style)
-                 //startActivity(Intent(this@MainActivity, ConversationActivity::class.java))
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish() // Close MainActivity so user can't go back
+    }
 
-                // ✅ Option 3: Launch Tab-Based Chat Experience (Chats, Calls, Users, Groups)
-                 startActivity(Intent(this@MainActivity, TabbedActivity::class.java))
-            }
-
-            override fun onError(e: CometChatException) {
-                // Handle login failure (e.g. show error message or retry)
-                Log.e("Login", "Login failed: ${e.message}")
-            }
-        })
+    private fun navigateToTabbedActivity() {
+        val intent = Intent(this, TabbedActivity::class.java)
+        startActivity(intent)
+        finish() // Close MainActivity so user can't go back
     }
 }
 
